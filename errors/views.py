@@ -20,6 +20,12 @@ def get_errors(request, version=1):
         error_queryset = Error.objects.all()
     error_queryset = error_queryset[offset:offset + limit]
     error_queryset = error_queryset.values()
+    print(error_queryset)
     return JsonResponse(list(error_queryset), safe=False)
 
 
+def create_errors(request,version=1):
+    body = json.loads(request.body.decode('utf-8'))
+    error = Error(**body)
+    error.save()
+    return JsonResponse(model_to_dict(error))
